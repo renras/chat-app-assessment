@@ -3,9 +3,11 @@ import firebaseAdmin from "firebase-admin";
 
 const serviceAccount = require("../../serviceAccountKey.json");
 
-firebaseAdmin.initializeApp({
-  credential: firebaseAdmin.credential.cert(serviceAccount),
-});
+if (!firebaseAdmin.apps.length) {
+  firebaseAdmin.initializeApp({
+    credential: firebaseAdmin.credential.cert(serviceAccount),
+  });
+}
 
 export default async function handler(
   req: NextApiRequest,

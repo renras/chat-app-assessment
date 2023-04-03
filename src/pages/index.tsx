@@ -1,9 +1,10 @@
 import { auth } from "@/firebase-config";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { useState } from "react";
 
 type FormData = {
   message: string;
@@ -12,16 +13,13 @@ type FormData = {
 export default function Home() {
   const router = useRouter();
   const { register, handleSubmit, reset } = useForm<FormData>();
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        const uid = user.uid;
-        // ...
-        console.log(user.email);
+        setUser(user);
       } else {
         router.push("/sign-in");
       }
@@ -37,7 +35,7 @@ export default function Home() {
     try {
       await axios.post("/api/message", {
         message: data.message,
-        sender: "hello",
+        sender: user?.email,
       });
       reset();
     } catch (error) {
@@ -54,7 +52,7 @@ export default function Home() {
         <button className="btn btn-primary mt-4">Send</button>
       </form>
       <button
-        className="btn btn-primary d-block"
+        className="btn btn-danger d-block"
         style={{ marginTop: "100px" }}
         onClick={() => handleLogout()}
       >
