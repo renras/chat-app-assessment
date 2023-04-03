@@ -24,7 +24,7 @@ export default async function handler(
     const newMessage = {
       message,
       sender,
-      createdAt: Date.now(),
+      createdAt: firebaseAdmin.firestore.FieldValue.serverTimestamp(),
     };
     const docRef = await messagesRef.add(newMessage);
     res.status(200).json({ success: true, data: docRef.id });
