@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/firebase-config";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 type FormData = {
   email: string;
@@ -36,7 +37,13 @@ export default function Home() {
           Password
         </label>
         <input className="form-control" type="text" {...register("password")} />
-        <button className="btn btn-primary mt-5">Submit</button>
+
+        <div className="mt-3">
+          <Link href="/sign-up">
+            <p>Sign up instead</p>
+          </Link>
+        </div>
+        <button className="btn btn-primary mt-5 d-block">Submit</button>
       </form>
     </main>
   );
