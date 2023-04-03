@@ -1,5 +1,6 @@
-import firebaseAdmin from "firebase-admin";
 import type { NextApiRequest, NextApiResponse } from "next";
+import firebaseAdmin from "firebase-admin";
+
 const serviceAccount = require("../../serviceAccountKey.json");
 
 firebaseAdmin.initializeApp({
